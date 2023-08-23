@@ -1,0 +1,68 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: jeremiahbuckley-poi-gateway-app-dev
+  annotations:
+    argocd/app-name: jeremiahbuckley-poi-gateway-app-dev
+    backstage.io/kubernetes-id: jeremiahbuckley-poi-gateway-app
+    backstage.io/kubernetes-namespace: jeremiahbuckley
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rhdh-ms/jeremiahbuckley-gateway
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.igb2792k.eastus2.aroapp.io/dev-pipelines/ns/jeremiahbuckley/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.igb2792k.eastus2.aroapp.io/k8s/ns/jeremiahbuckley/deployments/jeremiahbuckley-poi-gateway-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.igb2792k.eastus2.aroapp.io/#https://github.com/rhdh-ms/jeremiahbuckley-gateway?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/jeremiahbuckley"
+  system: workshop-system-jeremiahbuckley
+  providesApis:
+    - gateway-api-jeremiahbuckley
+  consumesApis:
+    - backend-api-jeremiahbuckley
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-jeremiahbuckley
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/jeremiahbuckley"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: gateway-api-jeremiahbuckley
+  description: API surface exposed to interact with Backends (summit POIs + parks data) via the Gateway
+  links:
+    - url: http://jeremiahbuckley-poi-gateway-app-jeremiahbuckley.apps.igb2792k.eastus2.aroapp.io/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rhdh-ms/jeremiahbuckley-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/jeremiahbuckley"
+  system: workshop-system-jeremiahbuckley
+  definition:
+    $text: https://github.com/rhdh-ms/jeremiahbuckley-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
